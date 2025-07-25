@@ -1,50 +1,100 @@
-# Welcome to your Expo app 👋
+# 📄 Requirements Document – VibeQuote
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 🎯 Purpose
 
-## Get started
+VibeQuote is a minimal Android-only mobile app that delivers aesthetically styled quotes based on the user’s selected “vibe” or mood category (e.g., motivational, emotional, feel-good). It will use **RevenueCat** to manage a Pro subscription for unlocking extra features and categories.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 🖥️ Platform
 
-2. Start the app
+* **Android only**
+* **React Native + Expo** with `react-native-purchases` for RevenueCat integration
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🧑‍💻 Users
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+* Free users: Limited access to vibes and features
+* Pro users (via RevenueCat): Full access to all vibe categories and Pro features
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 🧱 Core Features
 
-When you're ready, run:
+### 1. **Quote Viewer (Home Screen)**
 
-```bash
-npm run reset-project
-```
+* Select a **vibe** from dropdown / chip list:
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+  * e.g., *Motivational, Emotional, Calm, Feel-Good*
+* Display:
 
-## Learn more
+  * A quote styled over an aesthetic background
+  * Quote author
+* Actions:
 
-To learn more about developing your project with Expo, look at the following resources:
+  * "Get New Quote" (1 per day for free users)
+  * "Save as Wallpaper" (Pro only)
+  * "Upgrade to Pro" button (if not subscribed)
+  * “Remove Watermark” (Pro only)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+### 2. **Paywall Screen**
 
-Join our community of developers creating universal apps.
+* Shows Pro features:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+  * Unlimited quotes per day
+  * Unlock all vibe categories
+  * Save quotes as wallpaper
+  * No watermark
+* Purchase options (RevenueCat):
+
+  * Monthly
+  * Yearly
+* “Restore Purchases” option
+
+---
+
+### 3. **Entitlement Management**
+
+* Uses RevenueCat entitlements:
+
+  * `pro` – Unlocks all categories and features
+* On app load, check entitlement and store in global state
+
+---
+
+## 📦 Data
+
+* Local `quotes.json` file (organized by category/vibe)
+* Background image URL per quote or category
+* Optional: Quote history (locally stored if needed later)
+
+---
+
+## 🔐 Gated Features (Pro Only)
+
+* Access to *all* vibe categories (free = 1–2 categories)
+* Unlimited “New Quote” requests
+* Save quote as wallpaper
+* Remove watermark
+
+---
+
+## 🧪 MVP Scope (Only)
+
+* No account system or login
+* No cloud sync or history
+* Quotes stored locally
+* 2-4 vibe categories
+* Subscription via RevenueCat only
+
+---
+
+## 🧩 Stretch Features (Future)
+
+* Quote history viewer
+* Custom quote creation
+* Notifications for daily quote
+* More themes or fonts
