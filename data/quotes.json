@@ -1,0 +1,45 @@
+{
+  "motivational": [
+    {
+      "id": "mot_1",
+      "text": "The only way to do great work is to love what you do.",
+      "author": "Steve Jobs",
+      "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1200&fit=crop",
+      "category": "motivational"
+    },
+    {
+      "id": "mot_2",
+      "text": "Life is what happens to you while you're busy making other plans.",
+      "author": "John Lennon",
+      "backgroundImage": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&h=1200&fit=crop",
+      "category": "motivational"
+    }
+  ],
+  "feelGood": [
+    {
+      "id": "fg_1",
+      "text": "Happiness is not something ready made. It comes from your own actions.",
+      "author": "Dalai Lama",
+      "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1200&fit=crop",
+      "category": "feelGood"
+    }
+  ],
+  "emotional": [
+    {
+      "id": "emo_1",
+      "text": "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.",
+      "author": "Helen Keller",
+      "backgroundImage": "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&h=1200&fit=crop",
+      "category": "emotional"
+    }
+  ],
+  "calm": [
+    {
+      "id": "calm_1",
+      "text": "Peace comes from within. Do not seek it without.",
+      "author": "Buddha",
+      "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1200&fit=crop",
+      "category": "calm"
+    }
+  ]
+}
