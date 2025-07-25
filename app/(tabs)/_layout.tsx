@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import Foundation from "@expo/vector-icons/Foundation";
 import { Tabs } from "expo-router";
 export default function TabLayout() {
@@ -22,6 +23,15 @@ export default function TabLayout() {
           title: "VibeQuote",
           tabBarIcon: ({ color, size }) => (
             <Foundation name="quote" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings-outline" size={size} color={color} />
           ),
         }}
       />

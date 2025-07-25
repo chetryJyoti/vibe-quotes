@@ -9,9 +9,23 @@
     },
     {
       "id": "mot_2",
-      "text": "Life is what happens to you while you're busy making other plans.",
-      "author": "John Lennon",
+      "text": "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+      "author": "Winston Churchill",
       "backgroundImage": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&h=1200&fit=crop",
+      "category": "motivational"
+    },
+    {
+      "id": "mot_3",
+      "text": "The future belongs to those who believe in the beauty of their dreams.",
+      "author": "Eleanor Roosevelt",
+      "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1200&fit=crop",
+      "category": "motivational"
+    },
+    {
+      "id": "mot_4",
+      "text": "It is during our darkest moments that we must focus to see the light.",
+      "author": "Aristotle",
+      "backgroundImage": "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&h=1200&fit=crop",
       "category": "motivational"
     }
   ],
@@ -20,6 +34,20 @@
       "id": "fg_1",
       "text": "Happiness is not something ready made. It comes from your own actions.",
       "author": "Dalai Lama",
+      "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1200&fit=crop",
+      "category": "feelGood"
+    },
+    {
+      "id": "fg_2",
+      "text": "The best time to plant a tree was 20 years ago. The second best time is now.",
+      "author": "Chinese Proverb",
+      "backgroundImage": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=1200&fit=crop",
+      "category": "feelGood"
+    },
+    {
+      "id": "fg_3",
+      "text": "Life is really simple, but we insist on making it complicated.",
+      "author": "Confucius",
       "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1200&fit=crop",
       "category": "feelGood"
     }
@@ -31,6 +59,20 @@
       "author": "Helen Keller",
       "backgroundImage": "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&h=1200&fit=crop",
       "category": "emotional"
+    },
+    {
+      "id": "emo_2",
+      "text": "To love and be loved is to feel the sun from both sides.",
+      "author": "David Viscott",
+      "backgroundImage": "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&h=1200&fit=crop",
+      "category": "emotional"
+    },
+    {
+      "id": "emo_3",
+      "text": "The heart has its reasons which reason knows not.",
+      "author": "Blaise Pascal",
+      "backgroundImage": "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&h=1200&fit=crop",
+      "category": "emotional"
     }
   ],
   "calm": [
@@ -38,6 +80,20 @@
       "id": "calm_1",
       "text": "Peace comes from within. Do not seek it without.",
       "author": "Buddha",
+      "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1200&fit=crop",
+      "category": "calm"
+    },
+    {
+      "id": "calm_2",
+      "text": "In the midst of movement and chaos, keep stillness inside of you.",
+      "author": "Deepak Chopra",
+      "backgroundImage": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=1200&fit=crop",
+      "category": "calm"
+    },
+    {
+      "id": "calm_3",
+      "text": "Silence is not empty, it is full of answers.",
+      "author": "Unknown",
       "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1200&fit=crop",
       "category": "calm"
     }

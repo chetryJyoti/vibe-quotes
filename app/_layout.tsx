@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import * as SplashScreen from 'expo-splash-screen';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { RevenueCatProvider } from '../hooks/useRevenueCat';
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { RevenueCatProvider } from "../hooks/useRevenueCat";
 
 // Prevent the splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
@@ -22,18 +22,18 @@ export default function RootLayout() {
           <Stack.Screen
             name="paywall"
             options={{
-              presentation: 'modal',
-              title: 'Upgrade to Pro',
-              headerStyle: { backgroundColor: '#1a1a1a' },
-              headerTintColor: '#fff',
+              presentation: "modal",
+              title: "Upgrade to Pro",
+              headerStyle: { backgroundColor: "#1a1a1a" },
+              headerTintColor: "#fff",
             }}
           />
           <Stack.Screen
             name="settings"
             options={{
-              title: 'Settings',
-              headerStyle: { backgroundColor: '#1a1a1a' },
-              headerTintColor: '#fff',
+              title: "Settings",
+              headerStyle: { backgroundColor: "#1a1a1a" },
+              headerTintColor: "#fff",
             }}
           />
         </Stack>
