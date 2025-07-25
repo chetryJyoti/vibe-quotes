@@ -1,27 +1,95 @@
+import { router } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { QuoteActions } from "../../components/QuoteActions";
+import { QuoteCard } from "../../components/QuoteCard";
+import { VibeSelector } from "../../components/VibeSelector";
+import { useQuotes } from "../../hooks/useQuotes";
 import { useRevenueCat } from "../../hooks/useRevenueCat";
+import { StorageService } from "../../services/StorageService";
 
 export default function HomeScreen() {
   const { subscriptionState } = useRevenueCat();
+  const { userState, isLoading, error, getNewQuote, changeVibe, clearError } =
+    useQuotes(subscriptionState.isPro);
+
+  const handleNewQuote = async () => {
+    const success = await getNewQuote();
+    if (!success && error) {
+      Alert.alert("Error", error);
+    }
+  };
+
+  const handleSaveWallpaper = () => {
+    // TODO: Implement wallpaper saving
+    Alert.alert("Coming Soon", "Wallpaper saving will be implemented next!");
+  };
+
+  const handleUpgrade = () => {
+    router.push("/paywall");
+  };
+
+  const checkCanGetNewQuote = async () => {
+    if (subscriptionState.isPro) return true;
+    return await StorageService.canGetNewQuote(false);
+  };
+
+  if (isLoading || subscriptionState.isLoading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <Text style={styles.loadingText}>Loading your vibes...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (!userState?.currentQuote) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <Text style={styles.errorText}>No quotes available</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>VibeQuote</Text>
-        <Text style={styles.subtitle}>
-          {subscriptionState.isPro ? "✨ Pro User" : "🎯 Free User"}
-        </Text>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <VibeSelector
+          selectedVibe={userState.selectedVibe}
+          onVibeChange={changeVibe}
+          isPro={subscriptionState.isPro}
+          onUpgradePress={handleUpgrade}
+        />
 
-        {subscriptionState.isLoading ? (
-          <Text style={styles.loading}>Loading...</Text>
-        ) : (
-          <Text style={styles.status}>
-            App is ready! Time to build the quote viewer.
-          </Text>
+        <View style={styles.quoteSection}>
+          <QuoteCard
+            quote={userState.currentQuote}
+            showWatermark={!subscriptionState.isPro}
+          />
+        </View>
+
+        <QuoteActions
+          onNewQuote={handleNewQuote}
+          onSaveWallpaper={handleSaveWallpaper}
+          onUpgrade={handleUpgrade}
+          isPro={subscriptionState.isPro}
+          canGetNewQuote={true} // Will be properly checked
+          isLoading={isLoading}
+        />
+
+        {error && (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error}</Text>
+          </View>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -31,30 +99,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#1a1a1a",
   },
-  content: {
+  scrollContent: {
+    paddingBottom: 30,
+  },
+  loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
   },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#FF6B6B",
-    marginBottom: 10,
-  },
-  subtitle: {
+  loadingText: {
     fontSize: 18,
     color: "#4ECDC4",
-    marginBottom: 20,
   },
-  loading: {
-    fontSize: 16,
-    color: "#9ca3af",
+  quoteSection: {
+    alignItems: "center",
+    marginVertical: 20,
   },
-  status: {
-    fontSize: 16,
-    color: "#fff",
+  errorContainer: {
+    marginHorizontal: 20,
+    padding: 16,
+    backgroundColor: "rgba(255, 71, 87, 0.1)",
+    borderRadius: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: "#FF4757",
+  },
+  errorText: {
+    color: "#FF4757",
+    fontSize: 14,
     textAlign: "center",
   },
 });
