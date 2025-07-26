@@ -21,6 +21,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "VibeQuote",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Foundation name="quote" size={size} color={color} />
           ),
