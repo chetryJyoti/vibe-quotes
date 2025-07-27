@@ -27,7 +27,7 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
     try {
       // Initialize RevenueCat with your API key
       await Purchases.configure({
-        apiKey: 'your_revenuecat_public_api_key', // Replace with your actual key
+        apiKey: process.env.EXPO_PUBLIC_RC_ANDROID, 
       });
 
       // Get initial customer info
@@ -38,6 +38,8 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
       const offerings = await Purchases.getOfferings();
       if (offerings.current) {
         setOfferings(offerings.current);
+        console.log('offerings',JSON.stringify(offerings.current,null,2));
+        
       }
     } catch (error) {
       console.error('RevenueCat initialization error:', error);
