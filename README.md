@@ -98,3 +98,6 @@ VibeQuote is a minimal Android-only mobile app that delivers aesthetically style
 * Custom quote creation
 * Notifications for daily quote
 * More themes or fonts
+
+
+// formating json in terminal (console.log(JSON.stringify(data, null, 2));)

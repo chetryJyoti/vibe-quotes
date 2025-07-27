@@ -40,27 +40,25 @@ const PRO_FEATURES = [
 export default function PaywallScreen() {
   const { subscriptionState, offerings, purchasePackage, restorePurchases } =
     useRevenueCat();
-  const [selectedPackage, setSelectedPackage] = useState<any>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  React.useEffect(() => {
-    if (offerings?.availablePackages?.length > 0) {
-      // Default to annual package if available, otherwise first package
-      const annualPackage = offerings.availablePackages.find(
-        (pkg) =>
-          pkg.identifier.toLowerCase().includes("annual") ||
-          pkg.identifier.toLowerCase().includes("yearly")
-      );
-      setSelectedPackage(annualPackage || offerings.availablePackages[0]);
-    }
-  }, [offerings]);
+  // Get the monthly package from offerings
+  const monthlyPackage =
+    offerings?.monthly || offerings?.availablePackages?.[0];
 
   const handlePurchase = async () => {
-    if (!selectedPackage) return;
+    if (!monthlyPackage) {
+      Alert.alert(
+        "Error",
+        "No subscription plans available. Please try again later."
+      );
+      return;
+    }
+    
 
     try {
       setIsProcessing(true);
-      await purchasePackage(selectedPackage);
+      await purchasePackage(monthlyPackage);
 
       // Success! Close paywall
       Alert.alert(
@@ -69,6 +67,7 @@ export default function PaywallScreen() {
         [{ text: "Awesome!", onPress: () => router.back() }]
       );
     } catch (error: any) {
+      console.error("Purchase error:", error);
       Alert.alert(
         "Purchase Failed",
         error.message || "Something went wrong. Please try again.",
@@ -98,6 +97,7 @@ export default function PaywallScreen() {
         );
       }
     } catch (error: any) {
+      console.error("Restore error:", error);
       Alert.alert(
         "Restore Failed",
         error.message || "Failed to restore purchases. Please try again.",
@@ -108,7 +108,7 @@ export default function PaywallScreen() {
     }
   };
 
-  if (!offerings) {
+  if (!offerings || !monthlyPackage) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
@@ -131,76 +131,61 @@ export default function PaywallScreen() {
             Unlock the full VibeQuote experience
           </Text>
         </View>
+        <View style={styles.pricingContainer}>
+          <View style={styles.singlePricingCard}>
+            <View style={styles.popularBadge}>
+              <Text style={styles.popularText}>MONTHLY PLAN</Text>
+            </View>
 
-        {/* Features List */}
-        <View style={styles.featuresContainer}>
-          {PRO_FEATURES.map((feature, index) => (
-            <View key={index} style={styles.featureItem}>
-              <View style={styles.featureIcon}>
+            <View style={styles.pricingHeader}>
+              <Text style={styles.planName}>Pro Monthly</Text>
+              <Text style={styles.planPrice}>
+                {monthlyPackage.product.priceString}
+              </Text>
+              <Text style={styles.planPeriod}>per month</Text>
+            </View>
+
+            <View style={styles.planFeatures}>
+              <View style={styles.planFeature}>
                 <Ionicons
-                  name={feature.icon as any}
-                  size={24}
-                  color={Colors.primary}
+                  name="checkmark-circle"
+                  size={20}
+                  color={Colors.success}
                 />
-              </View>
-              <View style={styles.featureContent}>
-                <Text style={styles.featureTitle}>{feature.title}</Text>
-                <Text style={styles.featureDescription}>
-                  {feature.description}
+                <Text style={styles.planFeatureText}>
+                  Unlimited quotes daily
                 </Text>
               </View>
-            </View>
-          ))}
-        </View>
-
-        {/* Pricing Options */}
-        <View style={styles.pricingContainer}>
-          <Text style={styles.pricingTitle}>Choose Your Plan</Text>
-
-          {offerings.availablePackages.map((pkg) => {
-            const isSelected = selectedPackage?.identifier === pkg.identifier;
-            const isAnnual =
-              pkg.identifier.toLowerCase().includes("annual") ||
-              pkg.identifier.toLowerCase().includes("yearly");
-
-            return (
-              <View
-                key={pkg.identifier}
-                style={[
-                  styles.pricingOption,
-                  isSelected && styles.selectedPricingOption,
-                  isAnnual && styles.popularOption,
-                ]}
-              >
-                {isAnnual && (
-                  <View style={styles.popularBadge}>
-                    <Text style={styles.popularText}>MOST POPULAR</Text>
-                  </View>
-                )}
-
-                <View style={styles.pricingContent}>
-                  <Text style={styles.pricingPeriod}>
-                    {isAnnual ? "Annual" : "Monthly"}
-                  </Text>
-                  <Text style={styles.pricingPrice}>
-                    {pkg.product.priceString}
-                  </Text>
-                  {isAnnual && (
-                    <Text style={styles.pricingSubtext}>
-                      Save 60% vs monthly
-                    </Text>
-                  )}
-                </View>
-
-                <Button
-                  title={isSelected ? "Selected" : "Select"}
-                  onPress={() => setSelectedPackage(pkg)}
-                  variant={isSelected ? "primary" : "outline"}
-                  size="small"
+              <View style={styles.planFeature}>
+                <Ionicons
+                  name="checkmark-circle"
+                  size={20}
+                  color={Colors.success}
                 />
+                <Text style={styles.planFeatureText}>All vibe categories</Text>
               </View>
-            );
-          })}
+              <View style={styles.planFeature}>
+                <Ionicons
+                  name="checkmark-circle"
+                  size={20}
+                  color={Colors.success}
+                />
+                <Text style={styles.planFeatureText}>Save as wallpaper</Text>
+              </View>
+              <View style={styles.planFeature}>
+                <Ionicons
+                  name="checkmark-circle"
+                  size={20}
+                  color={Colors.success}
+                />
+                <Text style={styles.planFeatureText}>No watermark</Text>
+              </View>
+            </View>
+
+            <Text style={styles.priceBreakdown}>
+              That's just {monthlyPackage.product.pricePerWeekString} per week!
+            </Text>
+          </View>
         </View>
 
         {/* Purchase Button */}
@@ -209,12 +194,12 @@ export default function PaywallScreen() {
             title={
               isProcessing
                 ? "Processing..."
-                : `Start Pro - ${selectedPackage?.product.priceString || ""}`
+                : `Start Pro - ${monthlyPackage.product.priceString}/month`
             }
             onPress={handlePurchase}
             variant="primary"
             size="large"
-            disabled={!selectedPackage || isProcessing}
+            disabled={isProcessing}
             style={styles.purchaseButton}
           />
 
@@ -233,7 +218,7 @@ export default function PaywallScreen() {
           <Text style={styles.termsText}>
             By purchasing, you agree to our Terms of Service and Privacy Policy.
             Subscription automatically renews unless cancelled 24 hours before
-            renewal.
+            renewal. Cancel anytime in your device settings.
           </Text>
         </View>
       </ScrollView>
@@ -315,54 +300,66 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
   },
-  pricingOption: {
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 12,
-    borderWidth: 2,
-    borderColor: "transparent",
-    position: "relative",
-  },
-  selectedPricingOption: {
-    borderColor: Colors.primary,
+  singlePricingCard: {
     backgroundColor: "rgba(255, 107, 107, 0.1)",
-  },
-  popularOption: {
-    borderColor: Colors.secondary,
+    borderRadius: 20,
+    padding: 24,
+    borderWidth: 2,
+    borderColor: Colors.primary,
+    position: "relative",
   },
   popularBadge: {
     position: "absolute",
-    top: -8,
+    top: -12,
     alignSelf: "center",
     backgroundColor: Colors.secondary,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 16,
   },
   popularText: {
     color: "#fff",
     fontSize: 12,
     fontWeight: "bold",
   },
-  pricingContent: {
-    flex: 1,
-    marginRight: 16,
+  pricingHeader: {
+    alignItems: "center",
+    marginBottom: 24,
+    marginTop: 8,
   },
-  pricingPeriod: {
-    fontSize: 18,
+  planName: {
+    fontSize: 20,
     fontWeight: "600",
     color: "#fff",
+    marginBottom: 8,
   },
-  pricingPrice: {
-    fontSize: 24,
+  planPrice: {
+    fontSize: 36,
     fontWeight: "bold",
     color: Colors.primary,
-    marginVertical: 4,
+    marginBottom: 4,
   },
-  pricingSubtext: {
-    fontSize: 12,
+  planPeriod: {
+    fontSize: 16,
+    color: "#9ca3af",
+  },
+  planFeatures: {
+    marginBottom: 16,
+  },
+  planFeature: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  planFeatureText: {
+    fontSize: 16,
+    color: "#fff",
+    marginLeft: 12,
+  },
+  priceBreakdown: {
+    fontSize: 14,
     color: Colors.secondary,
+    textAlign: "center",
     fontWeight: "500",
   },
   purchaseContainer: {
@@ -371,6 +368,7 @@ const styles = StyleSheet.create({
   },
   purchaseButton: {
     backgroundColor: Colors.primary,
+    minHeight: 56,
   },
   restoreButton: {
     alignSelf: "center",
@@ -382,6 +380,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#6b7280",
     textAlign: "center",
-    lineHeight: 16,
+    lineHeight: 18,
   },
 });

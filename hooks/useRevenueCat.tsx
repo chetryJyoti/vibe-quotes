@@ -1,6 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import Purchases, { CustomerInfo, PurchasesOffering } from 'react-native-purchases';
-import { SubscriptionState } from '../types';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import Purchases, {
+  CustomerInfo,
+  PurchasesOffering,
+} from "react-native-purchases";
+import { SubscriptionState } from "../types";
 
 interface RevenueCatContextType {
   subscriptionState: SubscriptionState;
@@ -9,14 +12,22 @@ interface RevenueCatContextType {
   restorePurchases: () => Promise<void>;
 }
 
-const RevenueCatContext = createContext<RevenueCatContextType | undefined>(undefined);
+const RevenueCatContext = createContext<RevenueCatContextType | undefined>(
+  undefined
+);
 
-export function RevenueCatProvider({ children }: { children: React.ReactNode }) {
-  const [subscriptionState, setSubscriptionState] = useState<SubscriptionState>({
-    isPro: false,
-    isLoading: true,
-    error: null,
-  });
+export function RevenueCatProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [subscriptionState, setSubscriptionState] = useState<SubscriptionState>(
+    {
+      isPro: false,
+      isLoading: true,
+      error: null,
+    }
+  );
   const [offerings, setOfferings] = useState<PurchasesOffering | null>(null);
 
   useEffect(() => {
@@ -27,7 +38,7 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
     try {
       // Initialize RevenueCat with your API key
       await Purchases.configure({
-        apiKey: process.env.EXPO_PUBLIC_RC_ANDROID, 
+        apiKey: process.env.EXPO_PUBLIC_RC_ANDROID,
       });
 
       // Get initial customer info
@@ -38,22 +49,20 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
       const offerings = await Purchases.getOfferings();
       if (offerings.current) {
         setOfferings(offerings.current);
-        console.log('offerings',JSON.stringify(offerings.current,null,2));
-        
       }
     } catch (error) {
-      console.error('RevenueCat initialization error:', error);
-      setSubscriptionState(prev => ({
+      console.error("RevenueCat initialization error:", error);
+      setSubscriptionState((prev) => ({
         ...prev,
         isLoading: false,
-        error: 'Failed to initialize subscription service',
+        error: "Failed to initialize subscription service",
       }));
     }
   };
 
   const updateSubscriptionState = (customerInfo: CustomerInfo) => {
-    const isPro = customerInfo.entitlements.active['pro'] !== undefined;
-    
+    const isPro = customerInfo.entitlements.active["pro"] !== undefined;
+
     setSubscriptionState({
       isPro,
       isLoading: false,
@@ -63,41 +72,46 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
 
   const purchasePackage = async (packageToPurchase: any) => {
     try {
-      setSubscriptionState(prev => ({ ...prev, isLoading: true }));
-      
-      const { customerInfo } = await Purchases.purchasePackage(packageToPurchase);
+      setSubscriptionState((prev) => ({ ...prev, isLoading: true }));
+
+      const { customerInfo } = await Purchases.purchasePackage(
+        packageToPurchase
+      );
+
       updateSubscriptionState(customerInfo);
     } catch (error: any) {
-      setSubscriptionState(prev => ({
+      setSubscriptionState((prev) => ({
         ...prev,
         isLoading: false,
-        error: error.message || 'Purchase failed',
+        error: error.message || "Purchase failed",
       }));
     }
   };
 
   const restorePurchases = async () => {
     try {
-      setSubscriptionState(prev => ({ ...prev, isLoading: true }));
-      
+      setSubscriptionState((prev) => ({ ...prev, isLoading: true }));
+
       const customerInfo = await Purchases.restorePurchases();
       updateSubscriptionState(customerInfo);
     } catch (error: any) {
-      setSubscriptionState(prev => ({
+      setSubscriptionState((prev) => ({
         ...prev,
         isLoading: false,
-        error: error.message || 'Restore failed',
+        error: error.message || "Restore failed",
       }));
     }
   };
 
   return (
-    <RevenueCatContext.Provider value={{
-      subscriptionState,
-      offerings,
-      purchasePackage,
-      restorePurchases,
-    }}>
+    <RevenueCatContext.Provider
+      value={{
+        subscriptionState,
+        offerings,
+        purchasePackage,
+        restorePurchases,
+      }}
+    >
       {children}
     </RevenueCatContext.Provider>
   );
@@ -106,7 +120,7 @@ export function RevenueCatProvider({ children }: { children: React.ReactNode }) 
 export const useRevenueCat = () => {
   const context = useContext(RevenueCatContext);
   if (!context) {
-    throw new Error('useRevenueCat must be used within RevenueCatProvider');
+    throw new Error("useRevenueCat must be used within RevenueCatProvider");
   }
   return context;
 };
