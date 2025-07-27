@@ -1,103 +1,71 @@
-# 📄 Requirements Document – VibeQuote
+# VibeQuote – Aesthetic Quote App
 
-## 🎯 Purpose
-
-VibeQuote is a minimal Android-only mobile app that delivers aesthetically styled quotes based on the user’s selected “vibe” or mood category (e.g., motivational, emotional, feel-good). It will use **RevenueCat** to manage a Pro subscription for unlocking extra features and categories.
+VibeQuote is a minimal Android-only mobile app built with React Native + Expo. It delivers aesthetically styled quotes based on a user’s selected “vibe” (e.g., motivational, emotional, feel-good), with a clean UI and gated Pro features powered by RevenueCat.
 
 ---
 
-## 🖥️ Platform
+## Features (MVP Completed)
 
-* **Android only**
-* **React Native + Expo** with `react-native-purchases` for RevenueCat integration
+### Quote Viewer (Home Screen)
+- Mood selection via vibe chips (e.g., Motivational, Emotional, Feel-Good)
+- Displays quote and author over a styled background image
+- One quote per day limit for free users
+- Buttons:
+  - Get New Quote (with daily limit for free users)
+  - Save as Wallpaper (Pro only)
+  - Upgrade to Pro (navigates to paywall)
+- Watermark shown for free users
 
----
+### Paywall Screen
+- Lists Pro benefits:
+  - Unlimited quotes per day
+  - Access to all vibe categories
+  - Save quotes as wallpapers
+  - No watermark
+- Includes:
+  - Monthly and Yearly purchase buttons (via RevenueCat)
+  - Restore Purchases button
 
-## 🧑‍💻 Users
-
-* Free users: Limited access to vibes and features
-* Pro users (via RevenueCat): Full access to all vibe categories and Pro features
-
----
-
-## 🧱 Core Features
-
-### 1. **Quote Viewer (Home Screen)**
-
-* Select a **vibe** from dropdown / chip list:
-
-  * e.g., *Motivational, Emotional, Calm, Feel-Good*
-* Display:
-
-  * A quote styled over an aesthetic background
-  * Quote author
-* Actions:
-
-  * "Get New Quote" (1 per day for free users)
-  * "Save as Wallpaper" (Pro only)
-  * "Upgrade to Pro" button (if not subscribed)
-  * “Remove Watermark” (Pro only)
+### Entitlement Management
+- Uses RevenueCat entitlement key: `pro`
+- Checks Pro status on app load and stores in app state
+- Gating logic for all premium features
 
 ---
 
-### 2. **Paywall Screen**
-
-* Shows Pro features:
-
-  * Unlimited quotes per day
-  * Unlock all vibe categories
-  * Save quotes as wallpaper
-  * No watermark
-* Purchase options (RevenueCat):
-
-  * Monthly
-  * Yearly
-* “Restore Purchases” option
+## Platform
+- Android only
+- React Native with Expo
+- RevenueCat (`react-native-purchases`) for subscription management
 
 ---
 
-### 3. **Entitlement Management**
-
-* Uses RevenueCat entitlements:
-
-  * `pro` – Unlocks all categories and features
-* On app load, check entitlement and store in global state
+## Data
+- Static `quotes.json` file organized by vibe category
+- Background image URLs sourced per quote (Unsplash-style)
+- Local-only storage for MVP (no user accounts or cloud)
 
 ---
 
-## 📦 Data
-
-* Local `quotes.json` file (organized by category/vibe)
-* Background image URL per quote or category
-* Optional: Quote history (locally stored if needed later)
-
----
-
-## 🔐 Gated Features (Pro Only)
-
-* Access to *all* vibe categories (free = 1–2 categories)
-* Unlimited “New Quote” requests
-* Save quote as wallpaper
-* Remove watermark
+## Gated Features (Pro Only)
+- Access to all vibe categories (free users get 1–2)
+- Unlimited “New Quote” actions
+- Save quote as wallpaper
+- Remove watermark
 
 ---
 
-## 🧪 MVP Scope (Only)
-
-* No account system or login
-* No cloud sync or history
-* Quotes stored locally
-* 2-4 vibe categories
-* Subscription via RevenueCat only
+## MVP Scope
+- No account system or login
+- No cloud sync or history
+- 2–4 vibe categories
+- Subscriptions via RevenueCat only
+- All data bundled locally
 
 ---
 
-## 🧩 Stretch Features (Future)
-
-* Quote history viewer
-* Custom quote creation
-* Notifications for daily quote
-* More themes or fonts
-
-
-// formating json in terminal (console.log(JSON.stringify(data, null, 2));)
+## Future Scope (Stretch Goals)
+- Quote history viewer
+- Custom quote creation and saving
+- Daily quote notifications
+- Themes, fonts, and personalization options
